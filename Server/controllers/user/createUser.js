@@ -1,6 +1,6 @@
 import User from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
-import { normalizeText } from "../../utils/inputFields.js";
+import { normalizeEmail, normalizeText } from "../../utils/inputFields.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,37 +11,45 @@ const createUser = async (req, res) => {
     const password = normalizeText(req.body.password);
 
     if (!username) {
-      return response.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Please enter a username.",
       });
     }
 
     if (!email) {
-      return response.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Please enter your email address.",
       });
     }
 
     if (!EMAIL_REGEX.test(email)) {
-      return response.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Please enter a valid email address",
       });
     }
 
     if (!password) {
-      return response.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Please enter a password.",
       });
     }
 
     if (password.length < 8) {
-      return response.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Password must be at least 8 characters long.",
+      });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email address already in use.",
       });
     }
 

@@ -1,23 +1,33 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import sequelize from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
-// Load environment variables from .env file
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-
-// Middlewares
 app.use(cookieParser());
 app.use(express.json());
+app.use(userRoutes);
 
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("MySQL database connected successfully");
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+    await sequelize.sync();
+    console.log("All tables synchronized successfully");
 
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Unable to start server:", error);
+  }
+};
 
+startServer();

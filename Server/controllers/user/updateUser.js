@@ -1,5 +1,6 @@
 import User from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
+import { normalizeEmail, normalizeText } from "../../utils/inputFields.js";
 
 const updateUser = async (req, res) => {
   try {
