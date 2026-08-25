@@ -12,9 +12,13 @@ export const createAuthTokens = (user) => {
     JWT_ACCESS_SECRET,
     { expiresIn: "24h" },
   );
-  const refreshToken = jwt.sign({ id: user._id, role: user.role }, JWT_REFRESH_SECRET, {
-    expiresIn: "24h",
-  });
+  const refreshToken = jwt.sign(
+    { id: user._id, role: user.role },
+    JWT_REFRESH_SECRET,
+    {
+      expiresIn: "24h",
+    },
+  );
 
   return { accessToken, refreshToken };
 };
