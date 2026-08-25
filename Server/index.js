@@ -7,6 +7,7 @@ import leadRoutes from "./routes/leadRoutes.js";
 import Admin from "./models/adminModel.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
+
 const app = express();
 
 dotenv.config();
