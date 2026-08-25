@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import sequelize from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import leadRoutes from "./routes/leadRoutes.js"
 
 const app = express();
 
@@ -13,6 +14,8 @@ const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
 app.use(express.json());
 app.use(userRoutes);
+app.use(leadRoutes);
+
 
 const startServer = async () => {
   try {
