@@ -1,33 +1,36 @@
-import User from "../../models/userModel.js";
+import Admin from "../../models/adminModel.js";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+dotenv.config();
 import { normalizeEmail, normalizeText } from "../../utils/inputFields.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const createUser = async (req, res) => {
+const createAdmin = async (req, res) => {
+  console.log(process.env.ADMIN_USERNAME);
   try {
-    const username = normalizeText(req.body.username);
-    const email = normalizeEmail(req.body.email);
-    const password = normalizeText(req.body.password);
+    const username = normalizeText(process.env.ADMIN_USERNAME);
+    const email = normalizeEmail(process.env.ADMIN_EMAIL);
+    const password = normalizeText(process.env.ADMIN_PASSWORD);
 
     if (!username) {
       return res.status(400).json({
         success: false,
-        message: "Please enter a username.",
+        message: "Please provide an admin username.",
       });
     }
 
     if (!email) {
       return res.status(400).json({
         success: false,
-        message: "Please enter your email address.",
+        message: "Please provide an admin email address.",
       });
     }
 
     if (!EMAIL_REGEX.test(email)) {
       return res.status(400).json({
         success: false,
-        message: "Please enter a valid email address",
+        message: "Please enter a valid email address.",
       });
     }
 
@@ -45,13 +48,12 @@ const createUser = async (req, res) => {
       });
     }
 
-    const existingUser = await User.findOne({
+    const existingAdmin = await Admin.findOne({
       where: {
         email,
       },
     });
-
-    if (existingUser) {
+    if (existingAdmin) {
       return res.status(400).json({
         success: false,
         message: "Email address already in use.",
@@ -59,23 +61,28 @@ const createUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({
+    const admin = await Admin.create({
       username,
       email,
       password: hashedPassword,
     });
+
     return res.status(201).json({
       success: true,
-      message: "User created successfully",
-      user,
+      message: "Admin created successfully.",
+      admin,
     });
   } catch (error) {
+    console.error("Create admin error:", error);
+
     return res.status(500).json({
       success: false,
-      message: "Internal server error",
+      message: "Internal server error.",
       error: error.message,
     });
   }
 };
 
-export default createUser;
+// createAdmin();
+
+export default createAdmin;

@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import sequelize from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
-import leadRoutes from "./routes/leadRoutes.js"
+import leadRoutes from "./routes/leadRoutes.js";
+import Admin from "./models/adminModel.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 const app = express();
 
@@ -15,7 +17,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(userRoutes);
 app.use(leadRoutes);
-
+app.use(adminRoutes);
 
 const startServer = async () => {
   try {

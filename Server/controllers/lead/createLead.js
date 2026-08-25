@@ -149,13 +149,20 @@ const createLead = async (req, res) => {
     }
 
     const lastLead = await Lead.findOne({
-      order: [["id", "DESC"]],
+      order: [["leadNumber", "DESC"]],
     });
 
     let nextNumber = 1;
 
     if (lastLead) {
-      nextNumber = lastLead.id + 1;
+      const lastNumber = Number.parseInt(
+        lastLead.leadNumber.replace(/^LEAD-/, ""),
+        10,
+      );
+
+      if (Number.isFinite(lastNumber)) {
+        nextNumber = lastNumber + 1;
+      }
     }
 
     const leadNumber = `LEAD-${String(nextNumber).padStart(5, "0")}`;

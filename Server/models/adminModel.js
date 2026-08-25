@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-const User = sequelize.define(
-  "User",
+const Admin = sequelize.define(
+  "Admin",
   {
     id: {
       type: DataTypes.UUID,
@@ -18,19 +18,19 @@ const User = sequelize.define(
       allowNull: false,
       unique: true,
     },
-    password: { 
+    password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     role: {
       type: DataTypes.STRING,
-      defaultValue: "user",
+      defaultValue: "admin",
     },
   },
   {
     timestamps: true,
-    tableName: "users",
+    tableName: "admins",
   },
 );
 
-export default User;
+export default Admin;
