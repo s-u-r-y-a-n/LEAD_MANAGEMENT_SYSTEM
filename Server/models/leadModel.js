@@ -10,7 +10,7 @@ const Lead = sequelize.define(
       primaryKey: true,
     },
     leadNumber: {
-      type: DataTypes.STRING, 
+      type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
@@ -59,6 +59,10 @@ const Lead = sequelize.define(
     },
     assignedUser: {
       type: DataTypes.STRING,
+      allowNull: true,
+    },
+    assignedUserId: {
+      type: DataTypes.UUID,
       allowNull: true,
     },
     expectedValue: {
