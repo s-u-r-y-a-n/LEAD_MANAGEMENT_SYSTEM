@@ -11,6 +11,8 @@ export const UsersProvider = ({ children }) => {
   const [usersStatus, setUsersStatus] = useState("idle");
   const [createUserStatus, setCreateUserStatus] = useState("idle");
   const [usersError, setUsersError] = useState(null);
+  const [updateUserStatus, setUpdateUserStatus] = useState("idle");
+  const [deleteUserStatus, setDeleteUserStatus] = useState("idle");
 
   const authorizedConfig = useCallback(
     () => ({ headers: { Authorization: `Bearer ${accessToken}` } }),
@@ -48,12 +50,88 @@ export const UsersProvider = ({ children }) => {
           userData,
           authorizedConfig(),
         );
+
+        const newUser = response.data.user;
+
+        const { password, ...safeUser } = newUser;
+
+        setUsers((prevUsers) => [safeUser, ...prevUsers]);
+
         setCreateUserStatus("succeeded");
+
         return response.data;
       } catch (error) {
-        const message = error.response?.data?.message || "Unable to create user.";
+        const message =
+          error.response?.data?.message || "Unable to create user.";
+
         setCreateUserStatus("failed");
         setUsersError(message);
+
+        throw new Error(message, { cause: error });
+      }
+    },
+    [authorizedConfig],
+  );
+
+  const updateUser = useCallback(
+    async (userId, userData) => {
+      setUpdateUserStatus("loading");
+      setUsersError(null);
+
+      try {
+        const response = await axios.put(
+          `${API_BASE_URL}/user/${userId}`,
+          userData,
+          authorizedConfig(),
+        );
+
+        const updatedUser = response.data.user;
+
+        setUsers((prevUsers) =>
+          prevUsers.map((user) =>
+            user.id === updatedUser.id ? updatedUser : user,
+          ),
+        );
+
+        setUpdateUserStatus("succeeded");
+
+        return response.data;
+      } catch (error) {
+        const message =
+          error.response?.data?.message || "Unable to update user.";
+
+        setUpdateUserStatus("failed");
+        setUsersError(message);
+
+        throw new Error(message, { cause: error });
+      }
+    },
+    [authorizedConfig],
+  );
+
+  const deleteUser = useCallback(
+    async (userId) => {
+      setDeleteUserStatus("loading");
+      setUsersError(null);
+
+      try {
+        const response = await axios.delete(
+          `${API_BASE_URL}/user/${userId}`,
+          authorizedConfig(),
+        );
+
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+
+        setDeleteUserStatus("succeeded");
+
+        return response.data;
+      } catch (error) {
+        const message =
+          error.response?.data?.message || "Unable to delete user.";
+
+        setDeleteUserStatus("failed");
+        setUsersError(message);
+
         throw new Error(message, { cause: error });
       }
     },
@@ -68,9 +146,22 @@ export const UsersProvider = ({ children }) => {
       usersError,
       fetchUsers,
       createUser,
+      updateUser,
+      deleteUser,
     }),
-    [users, usersStatus, createUserStatus, usersError, fetchUsers, createUser],
+    [
+      users,
+      usersStatus,
+      createUserStatus,
+      usersError,
+      fetchUsers,
+      createUser,
+      updateUser,
+      deleteUser,
+    ],
   );
 
-  return <UsersContext.Provider value={value}>{children}</UsersContext.Provider>;
+  return (
+    <UsersContext.Provider value={value}>{children}</UsersContext.Provider>
+  );
 };
