@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import { Login } from "../Login/Login.jsx";
 import { Home } from "../User/Home/Home.jsx";
 import { Dashboard } from "../User/Dashboard/Dashboard.jsx";
+import { Users } from "../User/Users/Users.jsx";
+import { Leads } from "../User/Leads/Leads.jsx";
 
 export const Navigation = () => {
   return (
@@ -10,7 +12,9 @@ export const Navigation = () => {
       <Route path="/" element={<Login />} />
       <Route path="/admin/login" element={<Login />} />
       <Route path="/home" element={<Home />}>
-        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="users" element={<Users />} />
+        <Route path="leads" element={<Leads />} />
       </Route>
     </Routes>
   );

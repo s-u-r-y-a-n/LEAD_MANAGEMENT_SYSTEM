@@ -9,8 +9,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./Login.scss";
 
 const API_BASE_URL = "http://localhost:5000";
@@ -32,8 +31,9 @@ export const Login = () => {
   });
 
   const location = useLocation();
+  const navigate = useNavigate();
 
-  console.log("LOCAIION", location);
+  const isAdminLogin = location.pathname === "/admin/login";
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -84,16 +84,13 @@ export const Login = () => {
 
   async function login(event) {
     event.preventDefault();
-    console.log("LOGIN");
     const isValid = validateLoginCredentials(loginForm);
-
     if (!isValid) return;
-
     setIsSubmitting(true);
 
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/admin/login`,
+        `${API_BASE_URL}${isAdminLogin ? "/admin/login" : "/user/login"}`,
         loginForm,
       );
       localStorage.setItem("accessToken", response.data.accessToken);
@@ -102,6 +99,7 @@ export const Login = () => {
         email: "",
         password: "",
       });
+      navigate("/home");
       //   showToast(
       //     "success",
       //     "Logged In",
