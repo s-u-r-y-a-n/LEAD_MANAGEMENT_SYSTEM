@@ -3,10 +3,12 @@ import createUser from "../controllers/user/createUser.js";
 import deleteUser from "../controllers/user/deleteUser.js";
 import getUsers from "../controllers/user/getUsers.js";
 import updateUser from "../controllers/user/updateUser.js";
+import userLogin from "../controllers/user/userLogin.js";
 import { authenticateToken } from "../middleware/authenticateToken.js";
 
 const router = Router();
 
+router.post("/user/login", userLogin);
 router.get("/users", authenticateToken(["admin"]), getUsers);
 router.post("/user", authenticateToken(["admin"]), createUser);
 router.put("/user/:id", authenticateToken(["admin"]), updateUser);

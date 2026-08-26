@@ -1,11 +1,10 @@
 import "./App.css";
-import { Login } from "./Pages/Login/Login.jsx";
+import { Navigation } from "./Pages/Navigation/Navigation.jsx";
 
 function App() {
   return (
     <>
-      <h1>Hello</h1>
-      <Login />
+      <Navigation />
     </>
   );
 }

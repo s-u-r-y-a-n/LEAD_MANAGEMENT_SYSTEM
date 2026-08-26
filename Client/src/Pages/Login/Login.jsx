@@ -9,7 +9,9 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from "axios";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 // import { Link } from "react-router-dom";
+import "./Login.scss";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -28,6 +30,10 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
+  const location = useLocation();
+
+  console.log("LOCAIION", location);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -135,6 +141,7 @@ export const Login = () => {
           name="email"
           error={validationError.email}
           helperText={errorMessage.email}
+          style={{ width: "100%" }}
         />
         <TextField
           id="outlined-password-input"
@@ -163,6 +170,7 @@ export const Login = () => {
               ),
             },
           }}
+          style={{ width: "100%" }}
         />
         <Button
           variant="contained"
@@ -172,10 +180,6 @@ export const Login = () => {
         >
           {isSubmitting ? "Logging in..." : "Login"}
         </Button>
-        <p className="login-btns">
-          {/* <Link>Don't have an account ?</Link>
-          <Link to="/reset-password">Forgot Password ?</Link> */}
-        </p>
       </Box>
     </div>
   );

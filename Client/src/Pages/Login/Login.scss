@@ -1,0 +1,188 @@
+.login-parent {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(76, 175, 80, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(33, 150, 243, 0.12),
+      transparent 35%
+    ),
+    #f5f7fa;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 420px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+
+  padding: 20px 20px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+
+  &:hover {
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  // MUI TextFields
+  .MuiTextField-root {
+    width: 100%;
+    margin: 0 0 20px;
+  }
+
+  .MuiInputBase-root {
+    border-radius: 10px;
+    background-color: #fafafa;
+
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      background-color: #ffffff;
+    }
+
+    &.Mui-focused {
+      background-color: #ffffff;
+    }
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #d9dee5;
+    transition: border-color 0.2s ease;
+  }
+
+  .MuiInputBase-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #aeb7c4;
+  }
+
+  .MuiInputBase-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-width: 2px;
+  }
+
+  // Labels
+  .MuiInputLabel-root {
+    color: #6b7280;
+  }
+
+  .MuiInputLabel-root.Mui-focused {
+    color: #2e7d32;
+  }
+
+  // Error state
+  .MuiFormHelperText-root {
+    margin-left: 2px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  // Password visibility button
+  .MuiIconButton-root {
+    color: #6b7280;
+
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease;
+
+    &:hover {
+      color: #2e7d32;
+      background-color: rgba(46, 125, 50, 0.08);
+    }
+  }
+
+  // Login button
+  .MuiButton-root {
+    width: 100%;
+    min-height: 48px;
+
+    margin-top: 4px;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: none;
+
+    box-shadow: none;
+
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
+
+    &:hover {
+      box-shadow: 0 5px 14px rgba(46, 125, 50, 0.25);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .login-parent {
+    padding: 20px;
+  }
+
+  .login-form {
+    max-width: 100%;
+    padding: 32px 24px;
+    border-radius: 10px;
+  }
+}
+
+// Mobile
+@media (max-width: 400px) {
+  .login-parent {
+    padding: 14px;
+  }
+
+  .login-form {
+    padding: 28px 18px;
+    border-radius: 10px;
+
+    .MuiTextField-root {
+      margin-bottom: 18px;
+    }
+
+    .MuiButton-root {
+      min-height: 46px;
+    }
+  }
+}
