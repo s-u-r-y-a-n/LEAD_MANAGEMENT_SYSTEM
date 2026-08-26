@@ -32,8 +32,7 @@ const createLead = async (req, res) => {
     const companyName = normalizeText(req.body.companyName);
     const leadSource = normalizeText(req.body.leadSource);
     const status = normalizeText(req.body.status) || "New";
-    const priority = normalizeText(req.body.priority) || "Medium";
-    const assignedUser = normalizeText(req.body.assignedUser);
+    const priority = normalizeText(req.body.priority);
 
     const email = normalizeEmail(req.body.email);
     const phone = normalizeText(req.body.phone);
@@ -41,6 +40,10 @@ const createLead = async (req, res) => {
 
     const expectedValue = req.body.expectedValue;
     const expectedCloseDate = req.body.expectedCloseDate;
+
+    const isAdmin = req.user?.role === "admin";
+    const assignedUser = isAdmin ? normalizeText(req.body.assignedUser) : null;
+    const assignedUserId = isAdmin ? req.body.assignedUserId : null;
 
     if (!firstName) {
       return res.status(400).json({
@@ -176,6 +179,7 @@ const createLead = async (req, res) => {
       status,
       priority,
       assignedUser: assignedUser || null,
+      assignedUserId: assignedUserId || null,
       expectedValue: parsedExpectedValue,
       expectedCloseDate: parsedCloseDate,
       notes: notes || null,

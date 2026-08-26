@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { DialogComponent } from "../../Components/Dialog/Dialog.jsx";
 import { useLeads } from "../../context/leads/useLeads.js";
 import { useUsers } from "../../context/users/useUsers.js";
+import { useAuth } from "../../context/auth/useAuth.js";
 
 const LEAD_SOURCES = [
   "Website",
@@ -41,19 +42,21 @@ const initialForm = {
   leadSource: "Website",
   status: "New",
   priority: "Medium",
+  assignedUser: "",
   assignedUserId: "",
   expectedValue: "",
   expectedCloseDate: "",
   notes: "",
 };
 
-export const CreateLead = ({ isAdmin = false }) => {
+export const CreateLead = () => {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
 
   const { createLead, createLeadStatus } = useLeads();
   const { users, fetchUsers } = useUsers();
+  const { isAdmin } = useAuth();
   const isSubmitting = createLeadStatus === "loading";
 
   useEffect(() => {
@@ -66,6 +69,17 @@ export const CreateLead = ({ isAdmin = false }) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const handleUserAssignmentChange = (e) => {
+    const selectedUserId = e.target.value;
+    const selectedUserObj = users.find((u) => u.id === selectedUserId);
+
+    setForm((prev) => ({
+      ...prev,
+      assignedUserId: selectedUserId,
+      assignedUser: selectedUserObj ? selectedUserObj.username : "",
+    }));
   };
 
   const validate = () => {
@@ -217,20 +231,20 @@ export const CreateLead = ({ isAdmin = false }) => {
 
           {isAdmin && (
             <FormControl fullWidth>
-              <InputLabel id="assignUser-label">Assign To User</InputLabel>
+              <InputLabel id="assignedUser-label">Assigned User</InputLabel>
               <Select
-                labelId="assignUser-label"
+                labelId="assignedUser-label"
                 name="assignedUserId"
                 value={form.assignedUserId}
-                label="Assign To User"
-                onChange={handleChange}
+                label="Assigned User"
+                onChange={handleUserAssignmentChange}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>Unassigned</em>
                 </MenuItem>
                 {users.map((u) => (
                   <MenuItem key={u.id} value={u.id}>
-                    {u.username} ({u.email})
+                    {u.username}
                   </MenuItem>
                 ))}
               </Select>

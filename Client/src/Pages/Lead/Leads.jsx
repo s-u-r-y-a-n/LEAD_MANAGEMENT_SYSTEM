@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { CreateLead } from "../../Lead/CreateLead.jsx";
+import { CreateLead } from "./CreateLead.jsx";
 
 export const Leads = () => {
   return (
