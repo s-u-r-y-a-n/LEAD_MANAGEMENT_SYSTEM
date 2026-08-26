@@ -45,7 +45,7 @@ export const DialogComponent = ({
           <DialogContentText sx={{ mb: 2 }}>{description}</DialogContentText>
         )}
 
-        <form id={formId} onSubmit={(event) => handleSubmit(event)}>
+        <form id={formId} noValidate onSubmit={handleSubmit}>
           {children}
         </form>
       </DialogContent>

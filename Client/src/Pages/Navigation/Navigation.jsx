@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "../Login/Login.jsx";
 import { Home } from "../User/Home/Home.jsx";

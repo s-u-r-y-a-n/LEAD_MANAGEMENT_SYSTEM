@@ -7,19 +7,16 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import axios from "axios";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/auth/useAuth";
 import "./Login.scss";
-
-const API_BASE_URL = "http://localhost:5000";
 
 export const Login = () => {
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [validationError, setValidationError] = useState({
     email: false,
@@ -32,6 +29,8 @@ export const Login = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const { authStatus, login: loginRequest } = useAuth();
+  const isSubmitting = authStatus === "loading";
 
   const isAdminLogin = location.pathname === "/admin/login";
 
@@ -86,15 +85,8 @@ export const Login = () => {
     event.preventDefault();
     const isValid = validateLoginCredentials(loginForm);
     if (!isValid) return;
-    setIsSubmitting(true);
-
     try {
-      const response = await axios.post(
-        `${API_BASE_URL}${isAdminLogin ? "/admin/login" : "/user/login"}`,
-        loginForm,
-      );
-      localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.refreshToken);
+      await loginRequest({ credentials: loginForm, isAdminLogin });
       setLoginForm({
         email: "",
         password: "",
@@ -114,8 +106,6 @@ export const Login = () => {
       //     error.response?.data?.message ||
       //       "We could not log you in. Please check your details and try again.",
       //   );
-    } finally {
-      setIsSubmitting(false);
     }
   }
 

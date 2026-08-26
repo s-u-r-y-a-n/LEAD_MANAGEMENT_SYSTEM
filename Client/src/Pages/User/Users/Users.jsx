@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -6,14 +5,13 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { DialogComponent } from "../../../Components/Dialog/Dialog";
-
-const API_BASE_URL = "http://localhost:5000";
+import { FetchUsers } from "./Fetch Users/FetchUsers";
+import { useUsers } from "../../../context/users/useUsers";
 
 export const Users = () => {
   const [userData, setUserData] = useState({
@@ -21,7 +19,6 @@ export const Users = () => {
     email: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [validationError, setValidationError] = useState({
     username: false,
@@ -36,6 +33,8 @@ export const Users = () => {
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
+  const { createUser: createUserRequest, createUserStatus } = useUsers();
+  const isSubmitting = createUserStatus === "loading";
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -85,10 +84,8 @@ export const Users = () => {
   async function createUser(formValues) {
     const isValid = validateUserCredentials(formValues);
     if (!isValid) return;
-    setIsSubmitting(true);
-
     try {
-      const response = await axios.post(`${API_BASE_URL}/user`, formValues);
+      await createUserRequest(formValues);
       setUserData({
         username: "",
         email: "",
@@ -109,13 +106,12 @@ export const Users = () => {
       //     error.response?.data?.message ||
       //       "We could not log you in. Please check your details and try again.",
       //   );
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
   return (
     <div>
+      <FetchUsers />
       <Button variant="contained" onClick={() => setOpen(true)}>
         Subscribe
       </Button>
@@ -136,7 +132,7 @@ export const Users = () => {
           // onSubmit={createUser}
         >
           <TextField
-            id="outlined-password-input"
+            id="username"
             label="Username"
             type="text"
             required
@@ -148,7 +144,7 @@ export const Users = () => {
             style={{ width: "100%" }}
           />
           <TextField
-            id="outlined-password-input"
+            id="email"
             label="Email"
             type="text"
             required
@@ -160,7 +156,7 @@ export const Users = () => {
             style={{ width: "100%" }}
           />
           <TextField
-            id="outlined-password-input"
+            id="password"
             label="Password"
             type={showPassword ? "text" : "password"}
             required
