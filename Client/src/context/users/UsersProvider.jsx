@@ -2,11 +2,13 @@ import { useCallback, useMemo, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../auth/useAuth";
 import { UsersContext } from "./usersContext";
+import { useToast } from "../../Components/Toast/useToast";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 export const UsersProvider = ({ children }) => {
   const { accessToken } = useAuth();
+  const { success, error: showError } = useToast();
   const [users, setUsers] = useState([]);
   const [usersStatus, setUsersStatus] = useState("idle");
   const [createUserStatus, setCreateUserStatus] = useState("idle");
@@ -30,14 +32,16 @@ export const UsersProvider = ({ children }) => {
       );
       setUsers(response.data.users || []);
       setUsersStatus("succeeded");
+      // success(response.data.message || "Users loaded.", "Users loaded");
     } catch (error) {
       const message = error.response?.data?.message || "Unable to load users.";
       setUsers([]);
       setUsersStatus("failed");
       setUsersError(message);
+      showError(message, "Unable to load users");
       throw new Error(message, { cause: error });
     }
-  }, [authorizedConfig]);
+  }, [authorizedConfig, showError, success]);
 
   const createUser = useCallback(
     async (userData) => {
@@ -58,6 +62,7 @@ export const UsersProvider = ({ children }) => {
         setUsers((prevUsers) => [safeUser, ...prevUsers]);
 
         setCreateUserStatus("succeeded");
+        success(response.data.message || "User created.", "User created");
 
         return response.data;
       } catch (error) {
@@ -66,11 +71,12 @@ export const UsersProvider = ({ children }) => {
 
         setCreateUserStatus("failed");
         setUsersError(message);
+        showError(message, "Unable to create user");
 
         throw new Error(message, { cause: error });
       }
     },
-    [authorizedConfig],
+    [authorizedConfig, showError, success],
   );
 
   const updateUser = useCallback(
@@ -94,6 +100,7 @@ export const UsersProvider = ({ children }) => {
         );
 
         setUpdateUserStatus("succeeded");
+        success(response.data.message || "User updated.", "User updated");
 
         return response.data;
       } catch (error) {
@@ -102,11 +109,12 @@ export const UsersProvider = ({ children }) => {
 
         setUpdateUserStatus("failed");
         setUsersError(message);
+        showError(message, "Unable to update user");
 
         throw new Error(message, { cause: error });
       }
     },
-    [authorizedConfig],
+    [authorizedConfig, showError, success],
   );
 
   const deleteUser = useCallback(
@@ -123,6 +131,7 @@ export const UsersProvider = ({ children }) => {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 
         setDeleteUserStatus("succeeded");
+        success(response.data.message || "User deleted.", "User deleted");
 
         return response.data;
       } catch (error) {
@@ -131,11 +140,12 @@ export const UsersProvider = ({ children }) => {
 
         setDeleteUserStatus("failed");
         setUsersError(message);
+        showError(message, "Unable to delete user");
 
         throw new Error(message, { cause: error });
       }
     },
-    [authorizedConfig],
+    [authorizedConfig, showError, success],
   );
 
   const value = useMemo(

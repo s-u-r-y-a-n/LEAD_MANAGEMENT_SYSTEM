@@ -62,7 +62,6 @@ export const Sidebar = () => {
 
   return (
     <>
-      {/* Burger Menu */}
       <Box
         sx={{
           position: "fixed",
@@ -86,7 +85,6 @@ export const Sidebar = () => {
         </IconButton>
       </Box>
 
-      {/* Sidebar */}
       <Drawer
         variant="persistent"
         anchor="left"
@@ -101,23 +99,20 @@ export const Sidebar = () => {
           },
         }}
       >
-        {/* Logo */}
         <Box
           sx={{
             height: 64,
             display: "flex",
             alignItems: "center",
-            px: 3,
+            px: 8,
             fontSize: 20,
             fontWeight: 700,
           }}
         >
-          My App
         </Box>
 
         <Divider />
 
-        {/* Navigation */}
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
@@ -153,7 +148,6 @@ export const Sidebar = () => {
 
         <Divider />
 
-        {/* Logout */}
         <List>
           <ListItem disablePadding>
             <ListItemButton onClick={handleLogout}>

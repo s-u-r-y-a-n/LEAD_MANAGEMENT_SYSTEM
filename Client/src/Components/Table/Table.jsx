@@ -49,7 +49,6 @@ export const ReusableTable = ({
     >
       <TableContainer sx={{ maxHeight }}>
         <Table stickyHeader>
-          {/* Header */}
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -67,9 +66,7 @@ export const ReusableTable = ({
             </TableRow>
           </TableHead>
 
-          {/* Body */}
           <TableBody>
-            {/* Loading */}
             {loading ? (
               <TableRow>
                 <TableCell colSpan={columns.length}>
@@ -86,7 +83,6 @@ export const ReusableTable = ({
                 </TableCell>
               </TableRow>
             ) : paginatedRows.length === 0 ? (
-              /* Empty */
               <TableRow>
                 <TableCell colSpan={columns.length}>
                   <Box
@@ -103,7 +99,6 @@ export const ReusableTable = ({
                 </TableCell>
               </TableRow>
             ) : (
-              /* Rows */
               paginatedRows.map((row, rowIndex) => (
                 <TableRow hover key={row.id ?? rowIndex}>
                   {columns.map((column) => {
@@ -126,7 +121,6 @@ export const ReusableTable = ({
         </Table>
       </TableContainer>
 
-      {/* Pagination */}
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"

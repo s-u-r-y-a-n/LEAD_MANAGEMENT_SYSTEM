@@ -87,7 +87,6 @@ export const FetchUsers = () => {
       >
         <TableContainer>
           <Table stickyHeader>
-            {/* Table Header */}
             <TableHead>
               <TableRow>
                 <TableCell
@@ -148,7 +147,6 @@ export const FetchUsers = () => {
               </TableRow>
             </TableHead>
 
-            {/* Table Body */}
             <TableBody>
               {isLoading ? (
                 <TableRow>
@@ -184,28 +182,22 @@ export const FetchUsers = () => {
               ) : (
                 paginatedUsers.map((user, index) => (
                   <TableRow hover key={user.id}>
-                    {/* S.No */}
                     <TableCell align="center">
                       {page * rowsPerPage + index + 1}
                     </TableCell>
 
-                    {/* Username */}
                     <TableCell>{user.username}</TableCell>
 
-                    {/* Email */}
                     <TableCell>{user.email}</TableCell>
 
-                    {/* Created At */}
                     <TableCell>
                       {new Date(user.createdAt).toLocaleDateString()}
                     </TableCell>
 
-                    {/* Updated At */}
                     <TableCell>
                       {new Date(user.updatedAt).toLocaleDateString()}
                     </TableCell>
 
-                    {/* Actions */}
                     <TableCell align="center">
                       <Tooltip title="Edit User">
                         <IconButton
@@ -232,7 +224,6 @@ export const FetchUsers = () => {
           </Table>
         </TableContainer>
 
-        {/* Pagination */}
         <TablePagination
           rowsPerPageOptions={[10, 25, 50, 100]}
           component="div"
