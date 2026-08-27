@@ -16,6 +16,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/auth/useAuth";
 
 import { NavLink } from "react-router-dom";
 
@@ -45,6 +47,14 @@ export const Sidebar = () => {
       path: "/home/leads",
     },
   ];
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   return (
     <>
@@ -135,7 +145,6 @@ export const Sidebar = () => {
           ))}
         </List>
 
-        {/* Push Logout to bottom */}
         <Box sx={{ flexGrow: 1 }} />
 
         <Divider />
@@ -143,7 +152,7 @@ export const Sidebar = () => {
         {/* Logout */}
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={handleLogout}>
               <ListItemIcon>
                 <LogoutIcon />
               </ListItemIcon>
