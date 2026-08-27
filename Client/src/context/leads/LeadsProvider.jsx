@@ -38,6 +38,32 @@ export const LeadsProvider = ({ children }) => {
     }
   }, [authorizedConfig]);
 
+  const searchAndFilterLeads = useCallback(
+    async (filters) => {
+      setLeadsStatus("loading");
+      setLeadsError(null);
+      try {
+        const params = Object.fromEntries(
+          Object.entries(filters).filter(([, value]) => value !== ""),
+        );
+        const response = await axios.get(`${API_BASE_URL}/leads/search`, {
+          ...authorizedConfig(),
+          params,
+        });
+        setLeads(response.data.leads || []);
+        setLeadsStatus("succeeded");
+      } catch (error) {
+        const message =
+          error.response?.data?.message || "Unable to search leads.";
+        setLeads([]);
+        setLeadsStatus("failed");
+        setLeadsError(message);
+        throw new Error(message, { cause: error });
+      }
+    },
+    [authorizedConfig],
+  );
+
   const createLead = useCallback(
     async (leadData) => {
       setCreateLeadStatus("loading");
@@ -127,8 +153,10 @@ export const LeadsProvider = ({ children }) => {
       leadsStatus,
       createLeadStatus,
       updateLeadStatus,
+      deleteLeadStatus,
       leadsError,
       fetchLeads,
+      searchAndFilterLeads,
       createLead,
       updateLead,
       deleteLead,
@@ -142,8 +170,10 @@ export const LeadsProvider = ({ children }) => {
       leadsStatus,
       createLeadStatus,
       updateLeadStatus,
+      deleteLeadStatus,
       leadsError,
       fetchLeads,
+      searchAndFilterLeads,
       createLead,
       updateLead,
       clearLeads,
