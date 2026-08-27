@@ -1,5 +1,5 @@
 import "./App.css";
-import { Navigation } from "./Pages/Navigation/Navigation.jsx";
+import { Navigation } from "./Pages/Navigation.jsx";
 
 function App() {
   return (

@@ -13,7 +13,7 @@ import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import CancelIcon from "@mui/icons-material/Cancel";
 import PaidIcon from "@mui/icons-material/Paid";
-import { useLeads } from "../../../context/leads/useLeads.js";
+import { useLeads } from "../../context/leads/useLeads.js";
 
 const STATUS_CONFIG = {
   New: { color: "#1976d2", icon: FiberNewIcon },

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { DialogComponent } from "../../Components/Dialog/Dialog.jsx";
+import { DialogComponent } from "../../Components/Dialog.jsx";
 import { useLeads } from "../../context/leads/useLeads.js";
 
 export const DeleteLead = ({ lead, open, onClose }) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUsers } from "../../../../context/users/useUsers";
+import { useUsers } from "../../../context/users/useUsers";
 import {
   Paper,
   Table,
@@ -18,8 +18,8 @@ import {
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { UpdateUser } from "../UpdateUser/UpdateUser.jsx";
-import { DeleteUser } from "../DeleteUser/DeleteUser.jsx";
+import { UpdateUser } from "./UpdateUser.jsx";
+import { DeleteUser } from "./DeleteUser.jsx";
 
 export const FetchUsers = () => {
   const { users, usersStatus, fetchUsers } = useUsers();

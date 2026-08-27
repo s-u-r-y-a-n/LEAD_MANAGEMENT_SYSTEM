@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Login } from "../Login/Login.jsx";
-import { Home } from "../User/Home/Home.jsx";
-import { Dashboard } from "../User/Dashboard/Dashboard.jsx";
-import { Users } from "../User/Users/Users.jsx";
-import { Leads } from "../Lead/Leads.jsx";
-import { ProtectedRoutes } from "../../utils/ProtectedRoute.jsx";
+import { Login } from "./Login/Login.jsx";
+import { Home } from "./User/Home.jsx";
+import { Dashboard } from "./User/Dashboard.jsx";
+import { Users } from "./User/Users/Users.jsx";
+import { Leads } from "./Lead/Leads.jsx";
+import { ProtectedRoutes } from "../utils/ProtectedRoute.jsx";
 
 export const Navigation = () => {
   return (

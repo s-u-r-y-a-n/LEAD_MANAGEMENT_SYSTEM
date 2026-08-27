@@ -9,8 +9,8 @@ import { useState } from "react";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-import { DialogComponent } from "../../../../Components/Dialog/Dialog";
-import { useUsers } from "../../../../context/users/useUsers";
+import { DialogComponent } from "../../../Components/Dialog";
+import { useUsers } from "../../../context/users/useUsers";
 
 export const CreateUser = () => {
   const [userData, setUserData] = useState({

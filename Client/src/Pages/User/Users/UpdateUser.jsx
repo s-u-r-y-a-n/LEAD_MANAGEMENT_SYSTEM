@@ -1,7 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DialogComponent } from "../../../../Components/Dialog/Dialog.jsx";
-import { useUsers } from "../../../../context/users/useUsers.js";
+import { DialogComponent } from "../../../Components/Dialog.jsx";
+import { useUsers } from "../../../context/users/useUsers.js";
 
 export const UpdateUser = ({ user, open, onClose }) => {
   const [userData, setUserData] = useState({

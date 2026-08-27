@@ -17,7 +17,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/auth/useAuth";
+import { useAuth } from "../../context/auth/useAuth";
 
 import { NavLink } from "react-router-dom";
 

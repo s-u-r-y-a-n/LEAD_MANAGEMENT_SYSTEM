@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
-import { DialogComponent } from "../../../../Components/Dialog/Dialog.jsx";
-import { useUsers } from "../../../../context/users/useUsers.js";
+import { DialogComponent } from "../../../Components/Dialog.jsx";
+import { useUsers } from "../../../context/users/useUsers.js";
 
 export const DeleteUser = ({ user, open, onClose }) => {
   const { deleteUser, deleteUserStatus } = useUsers();

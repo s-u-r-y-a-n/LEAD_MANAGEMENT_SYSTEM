@@ -1,5 +1,5 @@
-import { CreateUser } from "./CreateUser/CreateUser.jsx";
-import { FetchUsers } from "./Fetch Users/FetchUsers.jsx";
+import { CreateUser } from "./CreateUser.jsx";
+import { FetchUsers } from "./FetchUsers.jsx";
 import { Box, Stack } from "@mui/material";
 
 export const Users = () => {
