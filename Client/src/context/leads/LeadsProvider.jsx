@@ -11,6 +11,7 @@ export const LeadsProvider = ({ children }) => {
   const [leadsStatus, setLeadsStatus] = useState("idle");
   const [createLeadStatus, setCreateLeadStatus] = useState("idle");
   const [updateLeadStatus, setUpdateLeadStatus] = useState("idle");
+  const [deleteLeadStatus, setDeleteLeadStatus] = useState("idle");
   const [leadsError, setLeadsError] = useState(null);
 
   const authorizedConfig = useCallback(
@@ -91,6 +92,29 @@ export const LeadsProvider = ({ children }) => {
     [authorizedConfig],
   );
 
+  const deleteLead = useCallback(
+    async (leadId) => {
+      setDeleteLeadStatus("loading");
+      setLeadsError(null);
+      try {
+        const response = await axios.delete(
+          `${API_BASE_URL}/lead/${leadId}`,
+          authorizedConfig(),
+        );
+        setLeads((prevLeads) => prevLeads.filter((lead) => lead.id !== leadId));
+        setDeleteLeadStatus("succeeded");
+        return response.data;
+      } catch (error) {
+        const message =
+          error.response?.data?.message || "Unable to delete lead.";
+        setDeleteLeadStatus("failed");
+        setLeadsError(message);
+        throw new Error(message, { cause: error });
+      }
+    },
+    [authorizedConfig],
+  );
+
   const clearLeads = useCallback(() => {
     setLeads([]);
     setLeadsStatus("idle");
@@ -107,6 +131,7 @@ export const LeadsProvider = ({ children }) => {
       fetchLeads,
       createLead,
       updateLead,
+      deleteLead,
       setLeads,
       setLeadsStatus,
       setLeadsError,
@@ -122,6 +147,7 @@ export const LeadsProvider = ({ children }) => {
       createLead,
       updateLead,
       clearLeads,
+      deleteLead,
     ],
   );
 

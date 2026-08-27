@@ -64,6 +64,12 @@ const Lead = sequelize.define(
     assignedUserId: {
       type: DataTypes.UUID,
       allowNull: true,
+      references: {
+        model: "users",
+        key: "id",
+      },
+      onDelete: "SET NULL",
+      onUpdate: "CASCADE",
     },
     expectedValue: {
       type: DataTypes.FLOAT,

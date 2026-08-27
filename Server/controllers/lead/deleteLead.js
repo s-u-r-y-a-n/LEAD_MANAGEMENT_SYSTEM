@@ -13,6 +13,13 @@ const deleteLead = async (req, res) => {
       });
     }
 
+    if (req.user.role !== "admin" && lead.assignedUserId !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only delete leads assigned to you.",
+      });
+    }
+
     await lead.destroy();
 
     return res.status(200).json({

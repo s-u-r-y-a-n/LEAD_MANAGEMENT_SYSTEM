@@ -7,10 +7,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DialogComponent } from "../../../../Components/Dialog/Dialog.jsx";
-import { useLeads } from "../../../../context/leads/useLeads.js";
-import { useUsers } from "../../../../context/users/useUsers.js";
-import { useAuth } from "../../../../context/auth/useAuth.js";
+import { DialogComponent } from "../../Components/Dialog/Dialog.jsx";
+import { useLeads } from "../../context/leads/useLeads.js";
+import { useUsers } from "../../context/users/useUsers.js";
+import { useAuth } from "../../context/auth/useAuth.js";
 
 const LEAD_SOURCES = [
   "Website",

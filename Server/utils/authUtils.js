@@ -1,19 +1,20 @@
 import jwt from "jsonwebtoken";
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 export const createAuthTokens = (user) => {
+  const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
+  const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+
   if (!JWT_ACCESS_SECRET || !JWT_REFRESH_SECRET) {
     throw new Error("JWT secrets are not configured");
   }
 
   const accessToken = jwt.sign(
-    { email: user.email, id: user._id, role: user.role },
+    { email: user.email, id: user.id, role: user.role },
     JWT_ACCESS_SECRET,
     { expiresIn: "24h" },
   );
   const refreshToken = jwt.sign(
-    { id: user._id, role: user.role },
+    { id: user.id, role: user.role },
     JWT_REFRESH_SECRET,
     {
       expiresIn: "24h",

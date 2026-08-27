@@ -1,4 +1,5 @@
 import Lead from "../../models/leadModel.js";
+import User from "../../models/userModel.js";
 import { normalizeEmail, normalizeText } from "../../utils/inputFields.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,8 +43,9 @@ const createLead = async (req, res) => {
     const expectedCloseDate = req.body.expectedCloseDate;
 
     const isAdmin = req.user?.role === "admin";
-    const assignedUser = isAdmin ? normalizeText(req.body.assignedUser) : null;
-    const assignedUserId = isAdmin ? req.body.assignedUserId : null;
+    const assignedUserId = isAdmin
+      ? normalizeText(req.body.assignedUserId)
+      : req.user.id;
 
     if (!firstName) {
       return res.status(400).json({
@@ -99,6 +101,21 @@ const createLead = async (req, res) => {
         success: false,
         message: "Invalid lead priority.",
       });
+    }
+
+    let assignee = null;
+
+    if (assignedUserId) {
+      assignee = await User.findByPk(assignedUserId, {
+        attributes: ["id", "username"],
+      });
+
+      if (!assignee) {
+        return res.status(400).json({
+          success: false,
+          message: "The selected assigned user does not exist.",
+        });
+      }
     }
 
     let parsedExpectedValue = null;
@@ -178,7 +195,7 @@ const createLead = async (req, res) => {
       leadSource,
       status,
       priority,
-      assignedUser: assignedUser || null,
+      assignedUser: assignee?.username || null,
       assignedUserId: assignedUserId || null,
       expectedValue: parsedExpectedValue,
       expectedCloseDate: parsedCloseDate,

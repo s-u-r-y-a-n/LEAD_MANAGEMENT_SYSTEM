@@ -1,4 +1,5 @@
 import Lead from "../../models/leadModel.js";
+import User from "../../models/userModel.js";
 import { normalizeEmail, normalizeText } from "../../utils/inputFields.js";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,13 +30,20 @@ const updateLead = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find lead
     const lead = await Lead.findByPk(id);
+    const isAdmin = req.user?.role === "admin";
 
     if (!lead) {
       return res.status(404).json({
         success: false,
         message: "Lead not found.",
+      });
+    }
+
+    if (req.user.role !== "admin" && lead.assignedUserId !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You can only update leads assigned to you.",
       });
     }
 
@@ -69,9 +77,9 @@ const updateLead = async (req, res) => {
         ? normalizeText(req.body.priority)
         : undefined;
 
-    const assignedUser =
-      req.body.assignedUser !== undefined
-        ? normalizeText(req.body.assignedUser)
+    const assignedUserId =
+      isAdmin && req.body.assignedUserId !== undefined
+        ? normalizeText(req.body.assignedUserId)
         : undefined;
 
     const email =
@@ -154,6 +162,21 @@ const updateLead = async (req, res) => {
       }
     }
 
+    let assignee;
+
+    if (assignedUserId !== undefined && assignedUserId) {
+      assignee = await User.findByPk(assignedUserId, {
+        attributes: ["id", "username"],
+      });
+
+      if (!assignee) {
+        return res.status(400).json({
+          success: false,
+          message: "The selected assigned user does not exist.",
+        });
+      }
+    }
+
     let parsedExpectedValue;
 
     if (req.body.expectedValue !== undefined) {
@@ -210,8 +233,9 @@ const updateLead = async (req, res) => {
     if (status !== undefined) updateData.status = status;
     if (priority !== undefined) updateData.priority = priority;
 
-    if (assignedUser !== undefined) {
-      updateData.assignedUser = assignedUser || null;
+    if (assignedUserId !== undefined) {
+      updateData.assignedUserId = assignedUserId || null;
+      updateData.assignedUser = assignee?.username || null;
     }
 
     if (email !== undefined) updateData.email = email;
