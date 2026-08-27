@@ -22,8 +22,7 @@ import { UpdateUser } from "../UpdateUser/UpdateUser.jsx";
 import { DeleteUser } from "../DeleteUser/DeleteUser.jsx";
 
 export const FetchUsers = () => {
-  const { users, usersStatus, fetchUsers, deleteUser, deleteUserStatus } =
-    useUsers();
+  const { users, usersStatus, fetchUsers } = useUsers();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -34,7 +33,6 @@ export const FetchUsers = () => {
   console.log("USERS", users);
 
   const isLoading = usersStatus === "loading";
-  const isDeleting = deleteUserStatus === "loading";
 
   useEffect(() => {
     fetchUsers().catch((error) =>

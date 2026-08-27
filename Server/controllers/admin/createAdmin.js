@@ -83,6 +83,4 @@ const createAdmin = async (req, res) => {
   }
 };
 
-// createAdmin();
-
 export default createAdmin;
