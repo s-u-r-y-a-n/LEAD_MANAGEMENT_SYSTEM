@@ -9,7 +9,7 @@ const createUser = async (req, res) => {
     const username = normalizeText(req.body.username);
     const email = normalizeEmail(req.body.email);
     const password = normalizeText(req.body.password);
-
+    
     if (!username) {
       return res.status(400).json({
         success: false,

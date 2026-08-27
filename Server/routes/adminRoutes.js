@@ -8,8 +8,8 @@ const router = Router();
 
 router.post("/admin/create", createAdmin);
 router.post("/admin/login", login);
-router.post("logout", logout);
-router.get("/validate-token", authenticateToken, (request, response) => {
+router.post("/logout", authenticateToken(), logout);
+router.get("/validate-token", authenticateToken(), (request, response) => {
   return response.status(200).json({ success: true });
 });
 

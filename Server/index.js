@@ -8,6 +8,7 @@ import leadRoutes from "./routes/leadRoutes.js";
 import Admin from "./models/adminModel.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import cors from "cors";
+import { swaggerUi, swaggerDocs } from "./config/swagger.js";
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.use(
     credentials: true,
   }),
 );
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.get("/api-docs.json", (req, res) => res.json(swaggerDocs));
 app.use(cookieParser());
 app.use(express.json());
 app.use(userRoutes);
