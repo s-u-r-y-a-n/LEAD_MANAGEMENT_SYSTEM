@@ -30,17 +30,23 @@ export const Sidebar = () => {
     setOpen((prev) => !prev);
   };
 
+  const { logout, isAdmin } = useAuth();
+
   const menuItems = [
     {
       text: "Dashboard",
       icon: <DashboardIcon />,
       path: "/home/dashboard",
     },
-    {
-      text: "Users",
-      icon: <PeopleIcon />,
-      path: "/home/users",
-    },
+    ...(isAdmin
+      ? [
+          {
+            text: "Users",
+            icon: <PeopleIcon />,
+            path: "/home/users",
+          },
+        ]
+      : []),
     {
       text: "Leads",
       icon: <SettingsIcon />,
@@ -49,8 +55,6 @@ export const Sidebar = () => {
   ];
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
-
   const handleLogout = async () => {
     await logout();
     navigate("/");

@@ -59,26 +59,14 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const logout = useCallback(async () => {
-    try {
-      await axios.post(
-        `${API_BASE_URL}/logout`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        },
-      );
-    } catch (error) {
-      console.error("Logout request failed:", error);
-    } finally {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      setAccessToken(null);
-      setRefreshToken(null);
-      setAuthStatus("idle");
-      setAuthError(null);
-    }
-  }, [accessToken]);
+  const logout = useCallback(() => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setAccessToken(null);
+    setRefreshToken(null);
+    setAuthStatus("idle");
+    setAuthError(null);
+  }, []);
 
   const value = useMemo(
     () => ({

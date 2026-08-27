@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Login } from "../Login/Login.jsx";
 import { Home } from "../User/Home/Home.jsx";
 import { Dashboard } from "../User/Dashboard/Dashboard.jsx";
@@ -13,8 +13,11 @@ export const Navigation = () => {
       <Route path="/admin/login" element={<Login />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/home" element={<Home />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="users" element={<Users />} />
+          <Route element={<ProtectedRoutes allowedRoles={["admin"]} />}>
+            <Route path="users" element={<Users />} />
+          </Route>
           <Route path="leads" element={<Leads />} />
         </Route>
       </Route>
