@@ -3,7 +3,7 @@ import { Login } from "../Login/Login.jsx";
 import { Home } from "../User/Home/Home.jsx";
 import { Dashboard } from "../User/Dashboard/Dashboard.jsx";
 import { Users } from "../User/Users/Users.jsx";
-import { Leads } from "../User/Leads/Leads.jsx";
+import { Leads } from "../Lead/Leads.jsx";
 
 export const Navigation = () => {
   return (

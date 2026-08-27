@@ -10,12 +10,32 @@ export const LeadsProvider = ({ children }) => {
   const [leads, setLeads] = useState([]);
   const [leadsStatus, setLeadsStatus] = useState("idle");
   const [createLeadStatus, setCreateLeadStatus] = useState("idle");
+  const [updateLeadStatus, setUpdateLeadStatus] = useState("idle");
   const [leadsError, setLeadsError] = useState(null);
 
   const authorizedConfig = useCallback(
     () => ({ headers: { Authorization: `Bearer ${accessToken}` } }),
     [accessToken],
   );
+
+  const fetchLeads = useCallback(async () => {
+    setLeadsStatus("loading");
+    setLeadsError(null);
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/leads`,
+        authorizedConfig(),
+      );
+      setLeads(response.data.leads || []);
+      setLeadsStatus("succeeded");
+    } catch (error) {
+      const message = error.response?.data?.message || "Unable to load leads.";
+      setLeads([]);
+      setLeadsStatus("failed");
+      setLeadsError(message);
+      throw new Error(message, { cause: error });
+    }
+  }, [authorizedConfig]);
 
   const createLead = useCallback(
     async (leadData) => {
@@ -42,6 +62,35 @@ export const LeadsProvider = ({ children }) => {
     [authorizedConfig],
   );
 
+  const updateLead = useCallback(
+    async (leadId, leadData) => {
+      setUpdateLeadStatus("loading");
+      setLeadsError(null);
+      try {
+        const response = await axios.put(
+          `${API_BASE_URL}/lead/${leadId}`,
+          leadData,
+          authorizedConfig(),
+        );
+        const updatedLead = response.data.lead;
+        setLeads((prevLeads) =>
+          prevLeads.map((lead) =>
+            lead.id === updatedLead.id ? updatedLead : lead,
+          ),
+        );
+        setUpdateLeadStatus("succeeded");
+        return response.data;
+      } catch (error) {
+        const message =
+          error.response?.data?.message || "Unable to update lead.";
+        setUpdateLeadStatus("failed");
+        setLeadsError(message);
+        throw new Error(message, { cause: error });
+      }
+    },
+    [authorizedConfig],
+  );
+
   const clearLeads = useCallback(() => {
     setLeads([]);
     setLeadsStatus("idle");
@@ -53,14 +102,27 @@ export const LeadsProvider = ({ children }) => {
       leads,
       leadsStatus,
       createLeadStatus,
+      updateLeadStatus,
       leadsError,
+      fetchLeads,
       createLead,
+      updateLead,
       setLeads,
       setLeadsStatus,
       setLeadsError,
       clearLeads,
     }),
-    [leads, leadsStatus, createLeadStatus, leadsError, createLead, clearLeads],
+    [
+      leads,
+      leadsStatus,
+      createLeadStatus,
+      updateLeadStatus,
+      leadsError,
+      fetchLeads,
+      createLead,
+      updateLead,
+      clearLeads,
+    ],
   );
 
   return (
